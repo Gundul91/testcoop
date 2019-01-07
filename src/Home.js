@@ -23,19 +23,17 @@ class Home extends Component {
   test(pagination, contatore, auth) {
     let url = "https://api.twitch.tv/helix/streams?first=100";
     url += (pagination) ? "&after=" + pagination : "";
-    // PROVARE A PASSARES OLO IL TOKEN, ANCHE SE PER ORA NON FUNZIONA
     fetch(url, {
       headers: {
         'Authorization': auth
       }
     })
     .then(function(c) {
-      console.log(c);
       return c.json();
     }).then((data) => {
-        console.log(data);
-        if(contatore < 50)
-          this.test(data.pagination.cursor, contatore+1);
+        console.log(contatore, data);
+        if(contatore < 500 && data.data.length === 100)
+          this.test(data.pagination.cursor, contatore+1, auth);
     }).catch((error) => {
       console.log(error);
     });
